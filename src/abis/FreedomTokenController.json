@@ -19,6 +19,12 @@
   },
   {
     "anonymous": false,
+    "inputs": [],
+    "name": "ModuleConfigLocked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [
       { "indexed": false, "internalType": "address", "name": "oldManager", "type": "address" },
       { "indexed": false, "internalType": "address", "name": "newManager", "type": "address" }
@@ -33,43 +39,6 @@
       { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
     ],
     "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [],
-    "name": "ModuleConfigLocked",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      { "indexed": true, "internalType": "address", "name": "module", "type": "address" },
-      { "indexed": false, "internalType": "bool", "name": "allowed", "type": "bool" }
-    ],
-    "name": "UtilityModuleUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
-      { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "indexed": false, "internalType": "string", "name": "reason", "type": "string" }
-    ],
-    "name": "FGTMintRecorded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
-      { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "indexed": false, "internalType": "string", "name": "reason", "type": "string" }
-    ],
-    "name": "FGTrMintRecorded",
     "type": "event"
   },
   {
@@ -89,7 +58,18 @@
       { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
       { "indexed": false, "internalType": "string", "name": "reason", "type": "string" }
     ],
-    "name": "FGTrBurnRecorded",
+    "name": "FGTLockRecorded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+      { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "string", "name": "reason", "type": "string" }
+    ],
+    "name": "FGTMintRecorded",
     "type": "event"
   },
   {
@@ -99,8 +79,57 @@
       { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
       { "indexed": false, "internalType": "string", "name": "reason", "type": "string" }
     ],
-    "name": "FGTLockRecorded",
+    "name": "FGTrBurnRecorded",
     "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+      { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "string", "name": "reason", "type": "string" }
+    ],
+    "name": "FGTrMintRecorded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "module", "type": "address" },
+      { "indexed": false, "internalType": "bool", "name": "allowed", "type": "bool" }
+    ],
+    "name": "UtilityModuleUpdated",
+    "type": "event"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "approvedUtilityModules",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "string", "name": "reason", "type": "string" }
+    ],
+    "name": "burnFGTForUtility",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "string", "name": "reason", "type": "string" }
+    ],
+    "name": "burnFGTrForUtility",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -117,6 +146,166 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "address", "name": "user", "type": "address" }],
+    "name": "getFGTBalances",
+    "outputs": [
+      { "internalType": "uint256", "name": "totalBalance", "type": "uint256" },
+      { "internalType": "uint256", "name": "lockedBalance", "type": "uint256" },
+      { "internalType": "uint256", "name": "availableBalance", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "user", "type": "address" }],
+    "name": "getFGTrBalances",
+    "outputs": [
+      { "internalType": "uint256", "name": "totalBalance", "type": "uint256" },
+      { "internalType": "uint256", "name": "lockedBalance", "type": "uint256" },
+      { "internalType": "uint256", "name": "availableBalance", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "user", "type": "address" }],
+    "name": "getUserTokenRecordCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "offset", "type": "uint256" },
+      { "internalType": "uint256", "name": "limit", "type": "uint256" }
+    ],
+    "name": "getUserTokenRecords",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint8", "name": "recordType", "type": "uint8" },
+          { "internalType": "uint8", "name": "level", "type": "uint8" },
+          { "internalType": "uint40", "name": "timestamp", "type": "uint40" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "bytes32", "name": "reason", "type": "bytes32" }
+        ],
+        "internalType": "struct FreedomTokenController.UserTokenRecord[]",
+        "name": "records",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "user", "type": "address" }],
+    "name": "getFGTMintCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "user", "type": "address" }],
+    "name": "getFGTrMintCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "user", "type": "address" }],
+    "name": "getFGTBurnCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "user", "type": "address" }],
+    "name": "getFGTrBurnCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "user", "type": "address" }],
+    "name": "getFGTLockCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "index", "type": "uint256" }
+    ],
+    "name": "getFGTMintRecord",
+    "outputs": [
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint40", "name": "timestamp", "type": "uint40" },
+      { "internalType": "bytes32", "name": "reason", "type": "bytes32" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "index", "type": "uint256" }
+    ],
+    "name": "getFGTrMintRecord",
+    "outputs": [
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint40", "name": "timestamp", "type": "uint40" },
+      { "internalType": "bytes32", "name": "reason", "type": "bytes32" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "index", "type": "uint256" }
+    ],
+    "name": "getFGTBurnRecord",
+    "outputs": [
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint40", "name": "timestamp", "type": "uint40" },
+      { "internalType": "bytes32", "name": "reason", "type": "bytes32" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "index", "type": "uint256" }
+    ],
+    "name": "getFGTrBurnRecord",
+    "outputs": [
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint40", "name": "timestamp", "type": "uint40" },
+      { "internalType": "bytes32", "name": "reason", "type": "bytes32" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "index", "type": "uint256" }
+    ],
+    "name": "getFGTLockRecord",
+    "outputs": [
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint40", "name": "timestamp", "type": "uint40" },
+      { "internalType": "bytes32", "name": "reason", "type": "bytes32" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "levelManager",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
@@ -124,10 +313,21 @@
     "type": "function"
   },
   {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "string", "name": "reason", "type": "string" }
+    ],
+    "name": "lockFGTForNFT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
-    "name": "orbitManager",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
+    "name": "lockModuleConfig",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -138,64 +338,53 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "approvedUtilityModules",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "totalFGTMinted",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "totalFGTrMinted",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "totalFGTBurned",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "totalFGTrBurned",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "totalFGTLocked",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "uint256", "name": "levelPrice", "type": "uint256" }
+    ],
+    "name": "onAutoUpgradeActivation",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint8", "name": "", "type": "uint8" }
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "uint256", "name": "levelPrice", "type": "uint256" }
     ],
-    "name": "userFGTMintedByLevel",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
+    "name": "onFounderFreeActivation",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint8", "name": "", "type": "uint8" }
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "uint256", "name": "levelPrice", "type": "uint256" }
     ],
-    "name": "userFGTrMintedByLevel",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "onManualActivation",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "orbitOwner", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "uint256", "name": "recycleReward", "type": "uint256" }
+    ],
+    "name": "onRecycleCompleted",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "orbitManager",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -242,113 +431,108 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "lockModuleConfig",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "totalFGTBurned",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "address", "name": "user", "type": "address" },
-      { "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "internalType": "uint256", "name": "levelPrice", "type": "uint256" }
-    ],
-    "name": "onManualActivation",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "totalFGTLocked",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "address", "name": "user", "type": "address" },
-      { "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "internalType": "uint256", "name": "levelPrice", "type": "uint256" }
-    ],
-    "name": "onAutoUpgradeActivation",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "totalFGTMinted",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "address", "name": "user", "type": "address" },
-      { "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "internalType": "uint256", "name": "levelPrice", "type": "uint256" }
-    ],
-    "name": "onFounderFreeActivation",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "totalFGTrBurned",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "address", "name": "orbitOwner", "type": "address" },
-      { "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "internalType": "uint256", "name": "recycleReward", "type": "uint256" }
-    ],
-    "name": "onRecycleCompleted",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "user", "type": "address" }
-    ],
-    "name": "getFGTBalances",
-    "outputs": [
-      { "internalType": "uint256", "name": "totalBalance", "type": "uint256" },
-      { "internalType": "uint256", "name": "lockedBalance", "type": "uint256" },
-      { "internalType": "uint256", "name": "availableBalance", "type": "uint256" }
-    ],
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "totalFGTrMinted",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "user", "type": "address" }
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "bytes32", "name": "", "type": "bytes32" }
     ],
-    "name": "getFGTrBalances",
-    "outputs": [
-      { "internalType": "uint256", "name": "totalBalance", "type": "uint256" },
-      { "internalType": "uint256", "name": "lockedBalance", "type": "uint256" },
-      { "internalType": "uint256", "name": "availableBalance", "type": "uint256" }
-    ],
+    "name": "userFGTBurnedByReason",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "user", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "string", "name": "reason", "type": "string" }
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint8", "name": "", "type": "uint8" }
     ],
-    "name": "burnFGTForUtility",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "userFGTMintedByLevel",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "user", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "string", "name": "reason", "type": "string" }
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "bytes32", "name": "", "type": "bytes32" }
     ],
-    "name": "burnFGTrForUtility",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "userFGTMintedByReason",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "user", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "string", "name": "reason", "type": "string" }
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "bytes32", "name": "", "type": "bytes32" }
     ],
-    "name": "lockFGTForNFT",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "userFGTLockedByReason",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "bytes32", "name": "", "type": "bytes32" }
+    ],
+    "name": "userFGTrBurnedByReason",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint8", "name": "", "type": "uint8" }
+    ],
+    "name": "userFGTrMintedByLevel",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "bytes32", "name": "", "type": "bytes32" }
+    ],
+    "name": "userFGTrMintedByReason",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   }
 ]
