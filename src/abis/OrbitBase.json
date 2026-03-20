@@ -2,46 +2,12 @@
   {
     "anonymous": false,
     "inputs": [
-      { "indexed": true, "internalType": "address", "name": "orbitOwner", "type": "address" },
-      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
-      { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "indexed": false, "internalType": "uint8", "name": "position", "type": "uint8" },
-      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
-    ],
-    "name": "PositionFilled",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      { "indexed": true, "internalType": "address", "name": "from", "type": "address" },
-      { "indexed": true, "internalType": "address", "name": "to", "type": "address" },
-      { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
-    ],
-    "name": "SpilloverPaid",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
       { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
       { "indexed": false, "internalType": "uint8", "name": "fromLevel", "type": "uint8" },
       { "indexed": false, "internalType": "uint8", "name": "toLevel", "type": "uint8" },
       { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
     "name": "AutoUpgradeTriggered",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
-      { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "indexed": false, "internalType": "uint256", "name": "cycleNumber", "type": "uint256" }
-    ],
-    "name": "OrbitReset",
     "type": "event"
   },
   {
@@ -69,6 +35,16 @@
   {
     "anonymous": false,
     "inputs": [
+      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+      { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "indexed": false, "internalType": "uint256", "name": "cycleNumber", "type": "uint256" }
+    ],
+    "name": "OrbitReset",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
       { "indexed": true, "internalType": "address", "name": "orbitOwner", "type": "address" },
       { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
       { "indexed": true, "internalType": "uint8", "name": "position", "type": "uint8" },
@@ -84,11 +60,28 @@
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "levelManager",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "orbitOwner", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+      { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "indexed": false, "internalType": "uint8", "name": "position", "type": "uint8" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "PositionFilled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "from", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "to", "type": "address" },
+      { "indexed": true, "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "SpilloverPaid",
+    "type": "event"
   },
   {
     "inputs": [],
@@ -98,10 +91,48 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "registration",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
+    "inputs": [
+      { "internalType": "address", "name": "orbitOwner", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "address", "name": "newUser", "type": "address" },
+      { "internalType": "address", "name": "referrer", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "fillPosition",
+    "outputs": [
+      { "internalType": "uint256", "name": "toOwner", "type": "uint256" },
+      { "internalType": "uint256", "name": "toSpillover1", "type": "uint256" },
+      { "internalType": "address", "name": "spillover1Recipient", "type": "address" },
+      { "internalType": "uint256", "name": "toSpillover2", "type": "uint256" },
+      { "internalType": "address", "name": "spillover2Recipient", "type": "address" },
+      { "internalType": "uint256", "name": "toEscrow", "type": "uint256" },
+      { "internalType": "uint256", "name": "toRecycle", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "orbitOwner", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "address", "name": "newUser", "type": "address" },
+      { "internalType": "address", "name": "referrer", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "activationId", "type": "uint256" }
+    ],
+    "name": "fillPositionDetailed",
+    "outputs": [
+      { "internalType": "uint8", "name": "sourcePosition", "type": "uint8" },
+      { "internalType": "uint32", "name": "sourceCycle", "type": "uint32" },
+      { "internalType": "uint256", "name": "toOwner", "type": "uint256" },
+      { "internalType": "uint256", "name": "toSpillover1", "type": "uint256" },
+      { "internalType": "address", "name": "spillover1Recipient", "type": "address" },
+      { "internalType": "uint256", "name": "toSpillover2", "type": "uint256" },
+      { "internalType": "address", "name": "spillover2Recipient", "type": "address" },
+      { "internalType": "uint256", "name": "toEscrow", "type": "uint256" },
+      { "internalType": "uint256", "name": "toRecycle", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -112,71 +143,19 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint8", "name": "level", "type": "uint8" }],
-    "name": "getOrbitConfig",
-    "outputs": [
-      {
-        "components": [
-          { "internalType": "uint8", "name": "totalPositions", "type": "uint8" },
-          { "internalType": "uint8", "name": "lines", "type": "uint8" },
-          { "internalType": "uint8", "name": "line1Size", "type": "uint8" },
-          { "internalType": "uint8", "name": "line2Size", "type": "uint8" },
-          { "internalType": "uint8", "name": "line3Size", "type": "uint8" },
-          { "internalType": "uint256", "name": "levelPrice", "type": "uint256" },
-          { "internalType": "uint256", "name": "upgradeRequirement", "type": "uint256" }
-        ],
-        "internalType": "struct IOrbitState.OrbitConfig",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
-    "name": "levelConfig",
-    "outputs": [
-      { "internalType": "uint8", "name": "totalPositions", "type": "uint8" },
-      { "internalType": "uint8", "name": "lines", "type": "uint8" },
-      { "internalType": "uint8", "name": "line1Size", "type": "uint8" },
-      { "internalType": "uint8", "name": "line2Size", "type": "uint8" },
-      { "internalType": "uint8", "name": "line3Size", "type": "uint8" },
-      { "internalType": "uint256", "name": "levelPrice", "type": "uint256" },
-      { "internalType": "uint256", "name": "upgradeRequirement", "type": "uint256" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       { "internalType": "address", "name": "user", "type": "address" },
-      { "internalType": "uint8", "name": "level", "type": "uint8" }
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "uint256", "name": "cycleNumber", "type": "uint256" },
+      { "internalType": "uint8", "name": "position", "type": "uint8" }
     ],
-    "name": "getUserOrbit",
+    "name": "getHistoricalPosition",
     "outputs": [
-      { "internalType": "uint8", "name": "currentPosition", "type": "uint8" },
-      { "internalType": "uint256", "name": "escrowBalance", "type": "uint256" },
-      { "internalType": "bool", "name": "autoUpgradeCompleted", "type": "bool" },
-      { "internalType": "uint8", "name": "positionsInLine1", "type": "uint8" },
-      { "internalType": "uint8", "name": "positionsInLine2", "type": "uint8" },
-      { "internalType": "uint8", "name": "positionsInLine3", "type": "uint8" },
-      { "internalType": "uint256", "name": "totalCycles", "type": "uint256" },
-      { "internalType": "uint256", "name": "totalEarned", "type": "uint256" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "user", "type": "address" },
-      { "internalType": "uint8", "name": "level", "type": "uint8" }
-    ],
-    "name": "getLinePaymentCounts",
-    "outputs": [
-      { "internalType": "uint8", "name": "line1Count", "type": "uint8" },
-      { "internalType": "uint8", "name": "line2Count", "type": "uint8" },
-      { "internalType": "uint8", "name": "line3Count", "type": "uint8" }
+      { "internalType": "address", "name": "occupant", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+      { "internalType": "address", "name": "referrer", "type": "address" },
+      { "internalType": "bool", "name": "isActive", "type": "bool" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -185,11 +164,13 @@
     "inputs": [
       { "internalType": "address", "name": "user", "type": "address" },
       { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "uint256", "name": "cycleNumber", "type": "uint256" },
       { "internalType": "uint8", "name": "position", "type": "uint8" }
     ],
-    "name": "getPositionLineArrivalNumber",
+    "name": "getHistoricalPositionActivationData",
     "outputs": [
-      { "internalType": "uint8", "name": "", "type": "uint8" }
+      { "internalType": "uint256", "name": "activationId", "type": "uint256" },
+      { "internalType": "bool", "name": "isMirror", "type": "bool" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -202,40 +183,7 @@
       { "internalType": "uint8", "name": "position", "type": "uint8" }
     ],
     "name": "getHistoricalPositionLineArrivalNumber",
-    "outputs": [
-      { "internalType": "uint8", "name": "", "type": "uint8" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "orbitOwner", "type": "address" },
-      { "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "internalType": "uint8", "name": "position", "type": "uint8" }
-    ],
-    "name": "getPositionRuleView",
-    "outputs": [
-      {
-        "components": [
-          { "internalType": "uint8", "name": "position", "type": "uint8" },
-          { "internalType": "uint8", "name": "line", "type": "uint8" },
-          { "internalType": "uint8", "name": "linePaymentNumber", "type": "uint8" },
-          { "internalType": "bool", "name": "autoUpgradeEnabled", "type": "bool" },
-          { "internalType": "bool", "name": "isFounderNoReferrerPath", "type": "bool" },
-          { "internalType": "uint256", "name": "toOwner", "type": "uint256" },
-          { "internalType": "uint256", "name": "toSpillover1", "type": "uint256" },
-          { "internalType": "uint256", "name": "toSpillover2", "type": "uint256" },
-          { "internalType": "uint256", "name": "toEscrow", "type": "uint256" },
-          { "internalType": "uint256", "name": "toRecycle", "type": "uint256" },
-          { "internalType": "address", "name": "spillover1Recipient", "type": "address" },
-          { "internalType": "address", "name": "spillover2Recipient", "type": "address" }
-        ],
-        "internalType": "struct IOrbitState.PositionRuleView",
-        "name": "viewData",
-        "type": "tuple"
-      }
-    ],
+    "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -275,6 +223,49 @@
   {
     "inputs": [
       { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" }
+    ],
+    "name": "getLinePaymentCounts",
+    "outputs": [
+      { "internalType": "uint8", "name": "line1Count", "type": "uint8" },
+      { "internalType": "uint8", "name": "line2Count", "type": "uint8" },
+      { "internalType": "uint8", "name": "line3Count", "type": "uint8" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint8", "name": "level", "type": "uint8" }],
+    "name": "getOrbitConfig",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint8", "name": "totalPositions", "type": "uint8" },
+          { "internalType": "uint8", "name": "lines", "type": "uint8" },
+          { "internalType": "uint8", "name": "line1Size", "type": "uint8" },
+          { "internalType": "uint8", "name": "line2Size", "type": "uint8" },
+          { "internalType": "uint8", "name": "line3Size", "type": "uint8" },
+          { "internalType": "uint256", "name": "levelPrice", "type": "uint256" },
+          { "internalType": "uint256", "name": "upgradeRequirement", "type": "uint256" }
+        ],
+        "internalType": "struct IOrbitState.OrbitConfig",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getOrbitType",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
       { "internalType": "uint8", "name": "level", "type": "uint8" },
       { "internalType": "uint8", "name": "position", "type": "uint8" }
     ],
@@ -293,16 +284,74 @@
     "inputs": [
       { "internalType": "address", "name": "user", "type": "address" },
       { "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "internalType": "uint256", "name": "cycleNumber", "type": "uint256" },
       { "internalType": "uint8", "name": "position", "type": "uint8" }
     ],
-    "name": "getHistoricalPosition",
+    "name": "getPositionActivationData",
     "outputs": [
-      { "internalType": "address", "name": "occupant", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
-      { "internalType": "address", "name": "referrer", "type": "address" },
-      { "internalType": "bool", "name": "isActive", "type": "bool" }
+      { "internalType": "uint256", "name": "activationId", "type": "uint256" },
+      { "internalType": "uint32", "name": "cycleNumber", "type": "uint32" },
+      { "internalType": "bool", "name": "isMirror", "type": "bool" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "uint8", "name": "position", "type": "uint8" }
+    ],
+    "name": "getPositionLineArrivalNumber",
+    "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "orbitOwner", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "uint8", "name": "position", "type": "uint8" }
+    ],
+    "name": "getPositionRuleView",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint8", "name": "position", "type": "uint8" },
+          { "internalType": "uint8", "name": "line", "type": "uint8" },
+          { "internalType": "uint8", "name": "linePaymentNumber", "type": "uint8" },
+          { "internalType": "bool", "name": "autoUpgradeEnabled", "type": "bool" },
+          { "internalType": "bool", "name": "isFounderNoReferrerPath", "type": "bool" },
+          { "internalType": "uint256", "name": "toOwner", "type": "uint256" },
+          { "internalType": "uint256", "name": "toSpillover1", "type": "uint256" },
+          { "internalType": "uint256", "name": "toSpillover2", "type": "uint256" },
+          { "internalType": "uint256", "name": "toEscrow", "type": "uint256" },
+          { "internalType": "uint256", "name": "toRecycle", "type": "uint256" },
+          { "internalType": "address", "name": "spillover1Recipient", "type": "address" },
+          { "internalType": "address", "name": "spillover2Recipient", "type": "address" }
+        ],
+        "internalType": "struct IOrbitState.PositionRuleView",
+        "name": "viewData",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" }
+    ],
+    "name": "getUserOrbit",
+    "outputs": [
+      { "internalType": "uint8", "name": "currentPosition", "type": "uint8" },
+      { "internalType": "uint256", "name": "escrowBalance", "type": "uint256" },
+      { "internalType": "bool", "name": "autoUpgradeCompleted", "type": "bool" },
+      { "internalType": "uint8", "name": "positionsInLine1", "type": "uint8" },
+      { "internalType": "uint8", "name": "positionsInLine2", "type": "uint8" },
+      { "internalType": "uint8", "name": "positionsInLine3", "type": "uint8" },
+      { "internalType": "uint256", "name": "totalCycles", "type": "uint256" },
+      { "internalType": "uint256", "name": "totalEarned", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -319,24 +368,25 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "address", "name": "orbitOwner", "type": "address" },
-      { "internalType": "uint8", "name": "level", "type": "uint8" },
-      { "internalType": "address", "name": "newUser", "type": "address" },
-      { "internalType": "address", "name": "referrer", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
-    ],
-    "name": "fillPosition",
+    "inputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+    "name": "levelConfig",
     "outputs": [
-      { "internalType": "uint256", "name": "toOwner", "type": "uint256" },
-      { "internalType": "uint256", "name": "toSpillover1", "type": "uint256" },
-      { "internalType": "address", "name": "spillover1Recipient", "type": "address" },
-      { "internalType": "uint256", "name": "toSpillover2", "type": "uint256" },
-      { "internalType": "address", "name": "spillover2Recipient", "type": "address" },
-      { "internalType": "uint256", "name": "toEscrow", "type": "uint256" },
-      { "internalType": "uint256", "name": "toRecycle", "type": "uint256" }
+      { "internalType": "uint8", "name": "totalPositions", "type": "uint8" },
+      { "internalType": "uint8", "name": "lines", "type": "uint8" },
+      { "internalType": "uint8", "name": "line1Size", "type": "uint8" },
+      { "internalType": "uint8", "name": "line2Size", "type": "uint8" },
+      { "internalType": "uint8", "name": "line3Size", "type": "uint8" },
+      { "internalType": "uint256", "name": "levelPrice", "type": "uint256" },
+      { "internalType": "uint256", "name": "upgradeRequirement", "type": "uint256" }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "levelManager",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -348,10 +398,33 @@
       { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
     "name": "mirrorPosition",
+    "outputs": [{ "internalType": "uint8", "name": "position", "type": "uint8" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "orbitOwner", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" },
+      { "internalType": "address", "name": "newUser", "type": "address" },
+      { "internalType": "address", "name": "referrer", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "activationId", "type": "uint256" }
+    ],
+    "name": "mirrorPositionDetailed",
     "outputs": [
-      { "internalType": "uint8", "name": "position", "type": "uint8" }
+      { "internalType": "uint8", "name": "position", "type": "uint8" },
+      { "internalType": "uint32", "name": "cycleNumber", "type": "uint32" },
+      { "internalType": "uint256", "name": "mirrorEscrowLockAmount", "type": "uint256" }
     ],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -366,11 +439,15 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "address", "name": "orbitOwner", "type": "address" },
-      { "internalType": "uint8", "name": "level", "type": "uint8" }
-    ],
-    "name": "settleEscrowState",
+    "inputs": [],
+    "name": "registration",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -387,9 +464,19 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_newManager", "type": "address" }
+      { "internalType": "address", "name": "orbitOwner", "type": "address" },
+      { "internalType": "uint8", "name": "level", "type": "uint8" }
     ],
-    "name": "updateLevelManager",
+    "name": "settleEscrowState",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -405,32 +492,18 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_newRegistration", "type": "address" }
+      { "internalType": "address", "name": "_newManager", "type": "address" }
     ],
-    "name": "updateRegistration",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "renounceOwnership",
+    "name": "updateLevelManager",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
+      { "internalType": "address", "name": "_newRegistration", "type": "address" }
     ],
-    "name": "transferOwnership",
+    "name": "updateRegistration",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
